@@ -69,7 +69,7 @@ func TestBuyCement(t *testing.T) {
 			}
 
 			if got := tcement.String(); got != strconv.Itoa(total) {
-				t.Errorf("BuyCement() = %v, want %v", got, tt.want)
+				t.Errorf("BuyCement() = %v, want %v", got, total)
 			}
 
 		})
@@ -89,7 +89,7 @@ func TestSellCement(t *testing.T) {
 			}
 
 			if got := tcement.String(); got != strconv.Itoa(total) {
-				t.Errorf("SellCement() = %v, want %v", got, tt.want)
+				t.Errorf("SellCement() = %v, want %v", got, total)
 			}
 
 		})
