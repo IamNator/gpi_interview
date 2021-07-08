@@ -33,7 +33,7 @@ var tests = []struct {
 		},
 		want: "-23",
 	}, {
-		name: "testing with uneven spaces",
+		name: "testing with small numbers",
 		args: args{
 			buy:  []int{3, 5, 7},
 			sell: []int{1, 1},
@@ -45,7 +45,7 @@ var tests = []struct {
 			buy:  []int{4000, 8000, 9000},
 			sell: []int{1000, 2000},
 		},
-		want: "18",
+		want: "18000",
 	},
 	{
 		name: "testing with numbers greater than ten thousand but less than a hundred thousand",
@@ -57,11 +57,10 @@ var tests = []struct {
 	},
 }
 
-var tcement buyandsell.Cement
-
 func TestBuyCement(t *testing.T) {
 
 	for _, tt := range tests {
+		var tcement buyandsell.Cement
 		t.Run(tt.name, func(t *testing.T) {
 			total := 0
 			for _, v := range tt.args.buy {
@@ -80,35 +79,71 @@ func TestBuyCement(t *testing.T) {
 func TestSellCement(t *testing.T) {
 
 	for _, tt := range tests {
+
+		var tcement buyandsell.Cement
+		t.Run(tt.name, func(t *testing.T) {
+			total := 0
+			for _, v := range tt.args.sell {
+				tcement.SellCement(v)
+				total += v
+			}
+
+			if got := tcement.String(); got != strconv.Itoa(total) {
+				t.Errorf("SellCement() = %v, want %v", got, tt.want)
+			}
+
+		})
+	}
+}
+
+func TestBuyAndSellCement(t *testing.T) {
+
+	for _, tt := range tests {
+		var tcement buyandsell.Cement
+
 		t.Run(tt.name, func(t *testing.T) {
 
-			buyandsell.BuyCement(tt.arg.buy)
-			buyandsell.SellCement(tt.arg.sell)
+			for _, v := range tt.args.buy {
+				tcement.BuyCement(v)
+			}
 
-			if got := buyandsell.String(); got != tt.want {
-				t.Errorf("ReverseSentence() = %v, want %v", got, tt.want)
+			for _, v := range tt.args.buy {
+				tcement.SellCement(v)
+			}
+
+			if got := tcement.String(); got != tt.want {
+				t.Errorf("String() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
 func BenchmarkBuyCement(b *testing.B) {
+
 	for _, tt := range tests {
+		var tcement buyandsell.Cement
 
 		b.Run(tt.name, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				buyandsell.BuyCement(tt.arg.buy)
+				for _, v := range tt.args.buy {
+					tcement.BuyCement(v)
+				}
 			}
 		})
 	}
 }
 
 func BenchmarkSellCement(b *testing.B) {
+
 	for _, tt := range tests {
+		var tcement buyandsell.Cement
+
 		b.Run(tt.name, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				buyandsell.SellCement(tt.arg.sell)
+				for _, v := range tt.args.sell {
+					tcement.SellCement(v)
 
+				}
 			}
 		})
 	}
