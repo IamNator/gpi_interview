@@ -85,7 +85,7 @@ func TestSellCement(t *testing.T) {
 			total := 0
 			for _, v := range tt.args.sell {
 				tcement.SellCement(v)
-				total += v
+				total -= v
 			}
 
 			if got := tcement.String(); got != strconv.Itoa(total) {
@@ -107,7 +107,7 @@ func TestBuyAndSellCement(t *testing.T) {
 				tcement.BuyCement(v)
 			}
 
-			for _, v := range tt.args.buy {
+			for _, v := range tt.args.sell {
 				tcement.SellCement(v)
 			}
 
